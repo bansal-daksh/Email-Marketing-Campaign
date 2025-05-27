@@ -1,67 +1,58 @@
-# Email-Marketing-Campaign
-1. What percentage of users opened the email and clicked on the link?
-----------------------------------------------------------------------
-Based on the dataset:
+# 📧 Email Marketing Campaign Optimization
 
-- Total users: 100,000  
-- Users who opened the email: 10,345  
-- Users who clicked the link in the email: 2,119  
+This project analyzes an email marketing campaign's performance and builds a predictive model to enhance user engagement by increasing click-through rates (CTR). It employs a two-stage machine learning pipeline to predict user interactions with marketing emails.
 
-Hence:
-- Email Open Rate = 10.35%
-- Click-Through Rate (CTR) = 2.12%
-- Click Through Rate conditional on open = 20.48%
+## 📊 Campaign Overview
 
-This shows that while a small portion of users open the email, those who do are fairly likely to click the link.
+- **Total users contacted**: 100,000
+- **Users who opened the email**: 10,345 (10.35%)
+- **Users who clicked the link**: 2,119 (2.12%)
+- **Click-through rate conditional on open**: 20.48%
 
+These metrics indicate that while a smaller segment of users open the emails, those who do are relatively likely to engage further by clicking the provided links.
 
-2. Can we build a model to optimize email sending strategy for more clicks?
----------------------------------------------------------------------------
-Yes, I have built a two-stage predictive pipeline:
+## 🎯 Objective
 
-1. Stage 1: A RandomForestClassifier predicts whether a user will open the email (is_email_opened) based on features like:
-   - Email content and version  
-   - Hour and weekday of delivery  
-   - User country and purchase history  
+The primary goal is to develop a predictive model that identifies users most likely to click on email links. By targeting these users, the campaign can achieve higher engagement rates and optimize resource allocation.
 
-2. Stage 2: A second RandomForestClassifier uses both the original features and the predicted open status to predict whether the user will click the link (is_link_clicked).
+## 🧠 Modeling Approach
 
-This structure mimics real-world dependencies, as a link click is only possible if the email is opened. The pipeline helps to:
-- Estimate the likelihood of both events
-- Strategically target users and optimize email timing and content
+A two-stage predictive pipeline is implemented using Random Forest classifiers:
 
+### Stage 1: Predicting Email Opens
 
-3. How much would the model improve click-through rate, and how to test it?
----------------------------------------------------------------------------
-To estimate improvement:
-- Use the model to score all users by predicted probability of clicking.
-- Target only top-ranked users (e.g., top 20%) with future campaigns.
-- Measure CTR from that group.
+- **Target**: `is_email_opened`
+- **Features**:
+  - Email content and version
+  - Hour and weekday of delivery
+  - User's country
+  - Purchase history
 
-A/B Testing Strategy:
-- Control Group: Send emails randomly as done currently.
-- Test Group: Send emails based on model predictions (targeted users).
-- Track CTR across both groups over a fixed time.
+### Stage 2: Predicting Link Clicks
 
-If the test group has a significantly higher CTR, it confirms that the model improves performance.
+- **Target**: `is_link_clicked`
+- **Features**:
+  - All features from Stage 1
+  - Predicted probability of email being opened from Stage 1
 
-This approach allows for quantitative measurement of model impact and provides a scalable solution for future campaigns.
+This sequential modeling reflects the real-world dependency where a link click is contingent upon the email being opened.
 
+## 🧪 Evaluation Strategy
 
-4. Interesting patterns and insights about campaign performance
----------------------------------------------------------------
-Several insights emerged from exploratory analysis and correlation mapping:
+To assess the model's effectiveness:
 
-Basic CTR Comparison by Email Version:
-- Personalized emails outperformed generic ones in terms of engagement.
+1. **Scoring**: Assign click probability scores to all users.
+2. **Targeting**: Select top N% of users with the highest predicted probabilities for future campaigns.
+3. **Measurement**: Compare the CTR of the targeted group against the overall CTR to evaluate improvement.
 
-Regional Differences:
-- Users from the US generally engaged more than those from the UK, both in opening and clicking.
+An A/B testing framework can further validate the model's impact by comparing engagement metrics between the targeted group and a control group.
 
+### Technologies Used
 
-Summary
--------
-- I built a robust, interpretable machine learning pipeline to model and optimize user engagement with marketing emails.
-- The model addresses business constraints, such as needing to open the email before a click can occur.
-- An A/B test framework is proposed to validate model efficacy.
-- We uncovered useful patterns that can guide segmentation and scheduling strategies.
+- Python
+- Required Python libraries:
+  - `pandas`
+  - `numpy`
+  - `scikit-learn`
+  - `matplotlib`
+  - `seaborn`
